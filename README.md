@@ -689,3 +689,110 @@ In this example, the `ConnectionPool` class initializes a pool of `DatabaseConne
 4. While object pooling can improve performance, it might not be suitable for all scenarios. In some cases, modern runtime environments and garbage collection mechanisms can handle object creation and destruction efficiently. Always measure and profile your application's performance to determine whether object pooling is beneficial.
 
 
+# *What are Structural Patterns? give examples of all its types.*
+
+Structural patterns are design patterns that deal with the way classes and objects are composed to form larger structures. They are used to improve the flexibility and reusability of code by reducing duplication and dependencies.
+There are seven main types of structural patterns:
+1. Adapter: The adapter pattern is used to make two incompatible classes work together. This is done by wrapping one class inside the other, so that the wrapped class can adapt to the interface of the other class.
+2. Bridge: The bridge pattern is used to decouple an abstraction from its implementation. This allows the two to vary independently, which can make the code more flexible and reusable.
+3. Composite: The composite pattern is used to treat individual objects and compositions of objects in a uniform way. This can make it easier to manage and manipulate objects in a tree structure.
+4. Decorator: The decorator pattern is used to add new behaviors to an object dynamically. This is done by wrapping the object inside a decorator object, which adds the new behaviors.
+5. Facade: The facade pattern is used to provide a simplified interface to a complex system. This can make the system easier to use and understand.
+6. Flyweight: The flyweight pattern is used to minimize memory usage by sharing objects that are used frequently. This is done by creating a pool of objects that can be reused.
+7. Proxy: The proxy pattern is used to provide a placeholder for another object. This can be used to control access to the object, to cache the object, or to provide a surrogate object for the real object.
+
+Here are some examples of how structural patterns can be used in real-world applications:
+
+1. The Adapter pattern can be used to make a legacy code work with a new API.
+2. The Bridge pattern can be used to decouple the presentation layer from the business logic layer.
+3. The Composite pattern can be used to represent a tree structure of objects, such as a file system or a company hierarchy.
+4. The Decorator pattern can be used to add new features to a GUI widget, such as a button or a text field.
+5. The Facade pattern can be used to simplify the interface to a database or a web service.
+6. The Flyweight pattern can be used to improve the performance of an application by sharing objects that are used frequently.
+7. The Proxy pattern can be used to cache objects or to control access to objects.
+
+Structural patterns can be a valuable tool for improving the design and implementation of software. By using structural patterns, you can make your code more flexible, reusable, and maintainable.
+
+
+# *Can you give a detailed example of the "Adapter" under Structural Patterns?*
+
+Certainly! The Adapter pattern is a structural design pattern that allows objects with incompatible interfaces to work together. It acts as a bridge between two interfaces, converting the interface of one class into another interface that clients expect. This pattern is useful when you need to integrate existing classes or systems with different interfaces without modifying their source code.
+
+Let's use an example of an audio player that needs to play different types of audio formats using Spring Boot to illustrate the Adapter pattern.
+
+1. First, let's define the existing audio player classes:
+
+```java
+public interface MediaPlayer {
+    void play(String audioType, String fileName);
+}
+
+public class Mp3Player implements MediaPlayer {
+    @Override
+    public void play(String audioType, String fileName) {
+        System.out.println("Playing mp3 file: " + fileName);
+    }
+}
+
+public class Mp4Player {
+    public void playMp4(String fileName) {
+        System.out.println("Playing mp4 file: " + fileName);
+    }
+}
+```
+
+2. Next, we'll create the `AdvancedMediaPlayer` interface and an adapter to make `Mp4Player` compatible with the `MediaPlayer` interface:
+
+```java
+public interface AdvancedMediaPlayer {
+    void playMp4(String fileName);
+}
+
+public class Mp4PlayerAdapter implements MediaPlayer {
+    private AdvancedMediaPlayer mp4Player;
+
+    public Mp4PlayerAdapter(AdvancedMediaPlayer mp4Player) {
+        this.mp4Player = mp4Player;
+    }
+
+    @Override
+    public void play(String audioType, String fileName) {
+        if ("mp4".equalsIgnoreCase(audioType)) {
+            mp4Player.playMp4(fileName);
+        }
+    }
+}
+```
+
+3. Now, in our Spring Boot application, we can use the adapter to play different audio formats:
+
+```java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class AudioPlayerApp {
+
+    public static void main(String[] args) {
+        SpringApplication.run(AudioPlayerApp.class, args);
+
+        MediaPlayer mp3Player = new Mp3Player();
+        MediaPlayer mp4Adapter = new Mp4PlayerAdapter(new Mp4Player());
+
+        mp3Player.play("mp3", "song.mp3");
+        mp4Adapter.play("mp4", "movie.mp4");
+    }
+}
+```
+
+In this example, the `Mp4PlayerAdapter` acts as an adapter that converts the `Mp4Player`'s interface into the `MediaPlayer` interface. This allows the client code to use the `Mp4Player` in the context of the audio player, even though they have incompatible interfaces.
+
+**Important Considerations:**
+
+1. The Adapter pattern helps achieve interoperability between classes with different interfaces, without modifying their source code.
+
+2. Adapters can be implemented using either class inheritance or object composition. In this example, we used object composition (the adapter holds a reference to the adaptee).
+
+3. The Adapter pattern can be used in scenarios like integrating third-party libraries, supporting legacy code, or creating wrapper classes to provide a more user-friendly interface to existing classes.
+
+4. While the Adapter pattern can be very useful, it's important to consider the complexity it introduces. It should be used when the benefits of integration outweigh the overhead of adding an additional layer of abstraction.
