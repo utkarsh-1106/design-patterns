@@ -23,21 +23,20 @@ Creational patterns are design patterns that deal with the creation of objects. 
 
 There are six main types of creational patterns:
 
-1. **Factory Method:** This pattern defines an interface for creating objects, but leaves the actual instantiation to subclasses. This allows subclasses to vary the type of objects that are created.
-2. **Abstract Factory:** This pattern provides a way to create families of related objects without specifying their concrete classes. This allows the client code to be independent of the concrete classes of the objects that it uses.
-3. **Singleton:** This pattern ensures that there is only one instance of a particular class in a program. This is useful for objects that need to be shared across the entire system.
-4. **Prototype:** This pattern creates a new object by cloning an existing object. This is useful for creating objects that are expensive to create or that need to be created frequently.
-5. **Builder:** This pattern separates the construction of a complex object from its representation. This makes it easier to create different representations of the same object.
-6. **Object Pool:** This pattern reuses objects that have been previously created. This can improve performance by reducing the number of objects that need to be created.
+Factory Method: This pattern defines an interface for creating objects, but leaves the actual instantiation to subclasses. This allows subclasses to vary the type of objects that are created.
+Abstract Factory: This pattern provides a way to create families of related objects without specifying their concrete classes. This allows the client code to be independent of the concrete classes of the objects that it uses.
+Singleton: This pattern ensures that there is only one instance of a particular class in a program. This is useful for objects that need to be shared across the entire system.
+Prototype: This pattern creates a new object by cloning an existing object. This is useful for creating objects that are expensive to create or that need to be created frequently.
+Builder: This pattern separates the construction of a complex object from its representation. This makes it easier to create different representations of the same object.
+Object Pool: This pattern reuses objects that have been previously created. This can improve performance by reducing the number of objects that need to be created.
 
 Here are some examples of how creational patterns can be used in real-world applications:
 
-1. The Factory Method pattern can be used to create different types of database connections. The abstract factory pattern can be used to create different types of user interfaces.
-2. The Singleton pattern can be used to create a single logger object that can be used by all parts of the application.
-3. The Prototype pattern can be used to create different types of documents, such as Word documents, PDF documents, and HTML documents.
-4. The Builder pattern can be used to create different types of cars, such as sedans, SUVs, and trucks.
-5. The Object Pool pattern can be used to reuse network connections.
-
+The Factory Method pattern can be used to create different types of database connections. The abstract factory pattern can be used to create different types of user interfaces.
+The Singleton pattern can be used to create a single logger object that can be used by all parts of the application.
+The Prototype pattern can be used to create different types of documents, such as Word documents, PDF documents, and HTML documents.
+The Builder pattern can be used to create different types of cars, such as sedans, SUVs, and trucks.
+The Object Pool pattern can be used to reuse network connections.
 Creational patterns can be a valuable tool for improving the design and implementation of software. By using creational patterns, you can make your code more flexible, reusable, and maintainable.
 
 
@@ -332,4 +331,360 @@ In this example, both `logger1` and `logger2` are references to the same instanc
 3. Be cautious when using Singletons, as they can introduce global state and make testing more challenging. It's important to consider whether a Singleton is the most appropriate solution for your design.
 
 4. In Spring Boot applications, Spring's managed beans and dependency injection can also help manage single instances effectively. Singleton pattern is often used when you're dealing with classes that aren't managed by Spring's container.
+
+Here's a thread-safe implementation of the `Logger` class using the double-checked locking technique for lazy initialization:
+
+```java
+public class Logger {
+    private static volatile Logger instance;
+
+    private Logger() {
+        // Private constructor to prevent instantiation from outside
+    }
+
+    public static Logger getInstance() {
+        if (instance == null) {
+            synchronized (Logger.class) {
+                if (instance == null) {
+                    instance = new Logger();
+                }
+            }
+        }
+        return instance;
+    }
+
+    public void log(String message) {
+        System.out.println("Logging: " + message);
+        // Actual logging logic here
+    }
+}
+```
+
+In this version of the `Logger` class, the `volatile` keyword is used on the `instance` field to ensure that any changes to it are immediately visible to all threads. The double-checked locking technique is used within the `getInstance()` method to ensure that the instance is only created if it doesn't already exist.
+
+The `synchronized` block is used to ensure that only one thread at a time can enter the critical section of the code where the instance is created. This helps prevent multiple threads from simultaneously creating different instances of the singleton.
+
+This implementation addresses thread-safety concerns, allowing multiple threads to safely access and use the single instance of the `Logger` class without causing conflicts.
+
+# *Can you give a detailed example of the "Prototype" under Creational Patterns?*
+
+Certainly! The Prototype pattern is a creational design pattern that is used to create new objects by copying an existing object, known as the prototype. This pattern is useful when creating new instances of an object is resource-intensive or when you want to isolate the client code from the details of object creation.
+
+Let's use an example of a document cloning system using Spring Boot to illustrate the Prototype pattern.
+
+1. First, let's define the prototype interface for documents:
+
+```java
+public interface DocumentPrototype {
+    DocumentPrototype cloneDocument();
+    void setContent(String content);
+    String getContent();
+}
+```
+
+2. Next, we'll create concrete implementations of the `DocumentPrototype` interface: `TextDocument` and `ImageDocument`.
+
+```java
+public class TextDocument implements DocumentPrototype {
+    private String content;
+
+    @Override
+    public DocumentPrototype cloneDocument() {
+        TextDocument copy = new TextDocument();
+        copy.setContent(this.content);
+        return copy;
+    }
+
+    @Override
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    @Override
+    public String getContent() {
+        return content;
+    }
+}
+
+public class ImageDocument implements DocumentPrototype {
+    private String imageSource;
+
+    @Override
+    public DocumentPrototype cloneDocument() {
+        ImageDocument copy = new ImageDocument();
+        copy.setImageSource(this.imageSource);
+        return copy;
+    }
+
+    @Override
+    public void setContent(String imageSource) {
+        this.imageSource = imageSource;
+    }
+
+    @Override
+    public String getContent() {
+        return imageSource;
+    }
+}
+```
+
+3. Now, in our Spring Boot application, we can use the prototype pattern to clone documents:
+
+```java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DocumentApp {
+
+    public static void main(String[] args) {
+        SpringApplication.run(DocumentApp.class, args);
+
+        TextDocument originalTextDoc = new TextDocument();
+        originalTextDoc.setContent("This is the original text document.");
+
+        ImageDocument originalImageDoc = new ImageDocument();
+        originalImageDoc.setContent("image.jpg");
+
+        // Clone text document
+        DocumentPrototype clonedTextDoc = originalTextDoc.cloneDocument();
+        System.out.println("Cloned Text Document Content: " + clonedTextDoc.getContent());
+
+        // Clone image document
+        DocumentPrototype clonedImageDoc = originalImageDoc.cloneDocument();
+        System.out.println("Cloned Image Document Content: " + clonedImageDoc.getContent());
+    }
+}
+```
+
+In this example, the `cloneDocument()` method in each concrete prototype class creates a new instance of the same class and copies the relevant data from the original instance. This way, we can create new documents by cloning existing ones.
+
+**Important Considerations:**
+1. Depending on your requirements, the cloning process can be shallow or deep. Shallow cloning means that only the top-level fields are copied, while deep cloning involves copying all nested objects as well.
+
+2. Be careful when cloning objects that contain complex references or circular dependencies. You might need to implement custom cloning logic in those cases.
+
+3. The Prototype pattern can be especially useful in scenarios where object creation is resource-intensive or complex, such as when you need to set up an object with various configuration options before using it.
+
+4. In modern Java versions, you can also consider using the `clone()` method from the `java.lang.Cloneable` interface to implement cloning. However, implementing `clone()` requires attention to object references and mutability, as it performs shallow copying by default.
+
+
+# *Can you give a detailed example of the "Builder" under Creational Patterns?*
+
+Certainly! The Builder pattern is a creational design pattern that separates the construction of a complex object from its representation, allowing the same construction process to create different representations. This pattern is useful when you have an object with many optional parameters or configurations and you want to provide a clear and flexible way to construct it.
+
+Let's use an example of building a custom computer configuration using Spring Boot to illustrate the Builder pattern.
+
+1. First, let's define the `Computer` class with its complex configuration:
+
+```java
+public class Computer {
+    private String processor;
+    private String memory;
+    private String storage;
+    private String graphicsCard;
+    private String operatingSystem;
+
+    public Computer(String processor, String memory, String storage, String graphicsCard, String operatingSystem) {
+        this.processor = processor;
+        this.memory = memory;
+        this.storage = storage;
+        this.graphicsCard = graphicsCard;
+        this.operatingSystem = operatingSystem;
+    }
+
+    // Getters for various configuration options
+}
+```
+
+2. Next, let's define the `ComputerBuilder` class, which will be responsible for building the `Computer` object step by step:
+
+```java
+public class ComputerBuilder {
+    private String processor;
+    private String memory;
+    private String storage;
+    private String graphicsCard;
+    private String operatingSystem;
+
+    public ComputerBuilder setProcessor(String processor) {
+        this.processor = processor;
+        return this;
+    }
+
+    public ComputerBuilder setMemory(String memory) {
+        this.memory = memory;
+        return this;
+    }
+
+    public ComputerBuilder setStorage(String storage) {
+        this.storage = storage;
+        return this;
+    }
+
+    public ComputerBuilder setGraphicsCard(String graphicsCard) {
+        this.graphicsCard = graphicsCard;
+        return this;
+    }
+
+    public ComputerBuilder setOperatingSystem(String operatingSystem) {
+        this.operatingSystem = operatingSystem;
+        return this;
+    }
+
+    public Computer build() {
+        return new Computer(processor, memory, storage, graphicsCard, operatingSystem);
+    }
+}
+```
+
+3. Now, in our Spring Boot application, we can use the `ComputerBuilder` to create custom computer configurations:
+
+```java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class ComputerApp {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ComputerApp.class, args);
+
+        Computer customComputer = new ComputerBuilder()
+            .setProcessor("Intel Core i7")
+            .setMemory("16 GB")
+            .setStorage("512 GB SSD")
+            .setGraphicsCard("NVIDIA GeForce RTX 3070")
+            .setOperatingSystem("Windows 10")
+            .build();
+
+        // Use the customComputer object with the configured specifications
+    }
+}
+```
+
+In this example, the `ComputerBuilder` class allows you to create a `Computer` object by setting its various configuration options using method chaining. This makes the process of constructing complex objects more intuitive and flexible.
+
+**Important Considerations:**
+1. The Builder pattern is especially useful when you have many optional parameters and configurations for an object. It helps avoid "telescoping constructors" where you have to provide numerous constructors for different combinations of parameters.
+
+2. The Builder pattern promotes readable and maintainable code by separating the construction process from the actual object.
+
+3. This example uses a simple implementation of the Builder pattern. In more complex scenarios, you might need to handle additional validation, default values, and other logic in the builder methods.
+
+4. The Builder pattern is often used in conjunction with other design patterns, such as the Fluent Interface pattern, to create more expressive and readable APIs.
+
+
+# *Can you give a detailed example of the "Object Pool" under Creational Patterns?*
+
+Certainly! The Object Pool pattern is a creational design pattern that manages a pool of reusable objects, known as the "pool," to improve the efficiency and performance of object allocation and deallocation. This pattern is particularly useful when the cost of creating and initializing objects is high and you want to avoid the overhead of creating and destroying objects frequently.
+
+Let's use an example of a connection pool for managing database connections using Spring Boot to illustrate the Object Pool pattern.
+
+1. First, let's define the `DatabaseConnection` class, representing a database connection:
+
+```java
+public class DatabaseConnection {
+    private String connectionUrl;
+    private boolean isConnected;
+
+    public DatabaseConnection(String connectionUrl) {
+        this.connectionUrl = connectionUrl;
+        this.isConnected = false;
+        // Logic for connecting to the database
+    }
+
+    public void connect() {
+        System.out.println("Connecting to database: " + connectionUrl);
+        isConnected = true;
+    }
+
+    public void disconnect() {
+        System.out.println("Disconnecting from database: " + connectionUrl);
+        isConnected = false;
+    }
+
+    public boolean isConnected() {
+        return isConnected;
+    }
+}
+```
+
+2. Next, let's define the `ConnectionPool` class that manages the pool of `DatabaseConnection` objects:
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class ConnectionPool {
+    private List<DatabaseConnection> connections;
+    private int poolSize;
+
+    public ConnectionPool(int poolSize) {
+        this.poolSize = poolSize;
+        connections = new ArrayList<>();
+        initializePool();
+    }
+
+    private void initializePool() {
+        for (int i = 0; i < poolSize; i++) {
+            connections.add(new DatabaseConnection("connection-" + i));
+        }
+    }
+
+    public DatabaseConnection acquireConnection() {
+        for (DatabaseConnection connection : connections) {
+            if (!connection.isConnected()) {
+                connection.connect();
+                return connection;
+            }
+        }
+        System.out.println("All connections are busy.");
+        return null;
+    }
+
+    public void releaseConnection(DatabaseConnection connection) {
+        connection.disconnect();
+    }
+}
+```
+
+3. Now, in our Spring Boot application, we can use the `ConnectionPool` to manage database connections:
+
+```java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class ConnectionPoolApp {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ConnectionPoolApp.class, args);
+
+        int poolSize = 5;
+        ConnectionPool connectionPool = new ConnectionPool(poolSize);
+
+        DatabaseConnection connection1 = connectionPool.acquireConnection();
+        DatabaseConnection connection2 = connectionPool.acquireConnection();
+
+        // Use the acquired connections
+
+        connectionPool.releaseConnection(connection1);
+        connectionPool.releaseConnection(connection2);
+    }
+}
+```
+
+In this example, the `ConnectionPool` class initializes a pool of `DatabaseConnection` objects during its creation. The `acquireConnection()` method is used to get an available connection from the pool, and the `releaseConnection()` method is used to release the connection back to the pool when it's no longer needed.
+
+**Important Considerations:**
+
+1. Object pools are particularly useful in scenarios where the overhead of creating and destroying objects is high, such as network connections, database connections, and threads.
+
+2. The Object Pool pattern can help improve the performance of resource-intensive applications by reusing and recycling objects instead of creating new ones.
+
+3. Care should be taken to manage the state of pooled objects properly. For example, you need to reset an object's state before it's reused.
+
+4. While object pooling can improve performance, it might not be suitable for all scenarios. In some cases, modern runtime environments and garbage collection mechanisms can handle object creation and destruction efficiently. Always measure and profile your application's performance to determine whether object pooling is beneficial.
+
 
