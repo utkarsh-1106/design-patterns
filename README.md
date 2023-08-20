@@ -1,4 +1,4 @@
-*What are Design Patterns?*
+# *What are Design Patterns?*
 
 Design patterns are reusable solutions to common problems that arise during software design and development. They are not complete solutions themselves, but rather, they provide general templates and guidelines for solving recurring design issues. Design patterns help developers create software that is more maintainable, modular, and flexible by promoting best practices and proven techniques.
 
@@ -17,7 +17,7 @@ Each design pattern has a specific intent, structure, and usage scenario. While 
 Design patterns are an integral part of software engineering and are widely used in various programming languages and paradigms, including object-oriented programming (OOP) and functional programming. They serve as a common language for developers to communicate and share best practices when designing and implementing software systems.
 
 
-*What are Creational Patterns? give examples of all its types.*
+# *What are Creational Patterns? give examples of all its types.*
 
 Creational patterns are design patterns that deal with the creation of objects. They are used to abstract the process of object creation and to improve the flexibility and reusability of code.
 
@@ -40,7 +40,7 @@ The Object Pool pattern can be used to reuse network connections.
 Creational patterns can be a valuable tool for improving the design and implementation of software. By using creational patterns, you can make your code more flexible, reusable, and maintainable.
 
 
-*Can you give a detailed example of the "Factory Method" under Creational Patterns?*
+# *Can you give a detailed example of the "Factory Method" under Creational Patterns?*
 
 Certainly! The Factory Method is a creational design pattern that provides an interface for creating objects in a super class, but allows subclasses to alter the type of objects that will be created. This pattern promotes loose coupling between the client code and the concrete classes being instantiated. In Spring Boot, this pattern is often used in scenarios where you want to create objects based on certain conditions or configurations.
 
@@ -133,7 +133,7 @@ com
 ```
 
 
-*Can you give a detailed example of the "Abstract Factory" under Creational Patterns and give the differences between Abstract Factory Method and Factory Method?*
+# *Can you give a detailed example of the "Abstract Factory" under Creational Patterns and give the differences between Abstract Factory Method and Factory Method?*
 
 Certainly! The Abstract Factory is another creational design pattern that provides an interface for creating families of related or dependent objects without specifying their concrete classes. It's used when a system must be independent of how its objects are created, composed, and represented. This pattern is particularly useful when you need to create multiple related objects that belong to the same family.
 
@@ -266,7 +266,7 @@ public class AuthApp {
 Both Factory Method and Abstract Factory patterns help to achieve loose coupling and flexibility in object creation, but they are applied to different scenarios based on the level of abstraction and complexity of the objects being created.
 
 
-*Can you give a detailed example of the "Singleton" under Creational Patterns?*
+# *Can you give a detailed example of the "Singleton" under Creational Patterns?*
 
 Certainly! The Singleton pattern is a creational design pattern that ensures a class has only one instance and provides a global point of access to that instance. It's used to control the instantiation of a class to ensure there's only one instance throughout the application's lifetime. This is especially useful when you want to manage a shared resource or configuration.
 
