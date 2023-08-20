@@ -23,12 +23,12 @@ Creational patterns are design patterns that deal with the creation of objects. 
 
 There are six main types of creational patterns:
 
-**Factory Method:** This pattern defines an interface for creating objects, but leaves the actual instantiation to subclasses. This allows subclasses to vary the type of objects that are created.
-**Abstract Factory:** This pattern provides a way to create families of related objects without specifying their concrete classes. This allows the client code to be independent of the concrete classes of the objects that it uses.
-**Singleton:** This pattern ensures that there is only one instance of a particular class in a program. This is useful for objects that need to be shared across the entire system.
-**Prototype:** This pattern creates a new object by cloning an existing object. This is useful for creating objects that are expensive to create or that need to be created frequently.
-**Builder:** This pattern separates the construction of a complex object from its representation. This makes it easier to create different representations of the same object.
-**Object Pool:** This pattern reuses objects that have been previously created. This can improve performance by reducing the number of objects that need to be created.
+1. **Factory Method:** This pattern defines an interface for creating objects, but leaves the actual instantiation to subclasses. This allows subclasses to vary the type of objects that are created.
+2. **Abstract Factory:** This pattern provides a way to create families of related objects without specifying their concrete classes. This allows the client code to be independent of the concrete classes of the objects that it uses.
+3. **Singleton:** This pattern ensures that there is only one instance of a particular class in a program. This is useful for objects that need to be shared across the entire system.
+4. **Prototype:** This pattern creates a new object by cloning an existing object. This is useful for creating objects that are expensive to create or that need to be created frequently.
+5. **Builder:** This pattern separates the construction of a complex object from its representation. This makes it easier to create different representations of the same object.
+6. **Object Pool:** This pattern reuses objects that have been previously created. This can improve performance by reducing the number of objects that need to be created.
 
 Here are some examples of how creational patterns can be used in real-world applications:
 
