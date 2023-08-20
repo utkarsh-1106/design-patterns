@@ -1,4 +1,4 @@
-# *What are Design Patterns?*
+### *What are Design Patterns?*
 
 Design patterns are reusable solutions to common problems that arise during software design and development. They are not complete solutions themselves, but rather, they provide general templates and guidelines for solving recurring design issues. Design patterns help developers create software that is more maintainable, modular, and flexible by promoting best practices and proven techniques.
 
@@ -17,7 +17,7 @@ Each design pattern has a specific intent, structure, and usage scenario. While 
 Design patterns are an integral part of software engineering and are widely used in various programming languages and paradigms, including object-oriented programming (OOP) and functional programming. They serve as a common language for developers to communicate and share best practices when designing and implementing software systems.
 
 
-# *What are Creational Patterns? give examples of all its types.*
+### *What are Creational Patterns? give examples of all its types.*
 
 Creational patterns are design patterns that deal with the creation of objects. They are used to abstract the process of object creation and to improve the flexibility and reusability of code.
 
@@ -41,7 +41,7 @@ Here are some examples of how creational patterns can be used in real-world appl
 Creational patterns can be a valuable tool for improving the design and implementation of software. By using creational patterns, you can make your code more flexible, reusable, and maintainable.
 
 
-# *Can you give a detailed example of the "Factory Method" under Creational Patterns?*
+### *Can you give a detailed example of the "Factory Method" under Creational Patterns?*
 
 Certainly! The Factory Method is a creational design pattern that provides an interface for creating objects in a super class, but allows subclasses to alter the type of objects that will be created. This pattern promotes loose coupling between the client code and the concrete classes being instantiated. In Spring Boot, this pattern is often used in scenarios where you want to create objects based on certain conditions or configurations.
 
@@ -134,7 +134,7 @@ com
 ```
 
 
-# *Can you give a detailed example of the "Abstract Factory" under Creational Patterns and give the differences between Abstract Factory Method and Factory Method?*
+### *Can you give a detailed example of the "Abstract Factory" under Creational Patterns and give the differences between Abstract Factory Method and Factory Method?*
 
 Certainly! The Abstract Factory is another creational design pattern that provides an interface for creating families of related or dependent objects without specifying their concrete classes. It's used when a system must be independent of how its objects are created, composed, and represented. This pattern is particularly useful when you need to create multiple related objects that belong to the same family.
 
@@ -267,7 +267,7 @@ public class AuthApp {
 Both Factory Method and Abstract Factory patterns help to achieve loose coupling and flexibility in object creation, but they are applied to different scenarios based on the level of abstraction and complexity of the objects being created.
 
 
-# *Can you give a detailed example of the "Singleton" under Creational Patterns?*
+### *Can you give a detailed example of the "Singleton" under Creational Patterns?*
 
 Certainly! The Singleton pattern is a creational design pattern that ensures a class has only one instance and provides a global point of access to that instance. It's used to control the instantiation of a class to ensure there's only one instance throughout the application's lifetime. This is especially useful when you want to manage a shared resource or configuration.
 
@@ -367,7 +367,7 @@ The `synchronized` block is used to ensure that only one thread at a time can en
 
 This implementation addresses thread-safety concerns, allowing multiple threads to safely access and use the single instance of the `Logger` class without causing conflicts.
 
-# *Can you give a detailed example of the "Prototype" under Creational Patterns?*
+### *Can you give a detailed example of the "Prototype" under Creational Patterns?*
 
 Certainly! The Prototype pattern is a creational design pattern that is used to create new objects by copying an existing object, known as the prototype. This pattern is useful when creating new instances of an object is resource-intensive or when you want to isolate the client code from the details of object creation.
 
@@ -470,7 +470,7 @@ In this example, the `cloneDocument()` method in each concrete prototype class c
 4. In modern Java versions, you can also consider using the `clone()` method from the `java.lang.Cloneable` interface to implement cloning. However, implementing `clone()` requires attention to object references and mutability, as it performs shallow copying by default.
 
 
-# *Can you give a detailed example of the "Builder" under Creational Patterns?*
+### *Can you give a detailed example of the "Builder" under Creational Patterns?*
 
 Certainly! The Builder pattern is a creational design pattern that separates the construction of a complex object from its representation, allowing the same construction process to create different representations. This pattern is useful when you have an object with many optional parameters or configurations and you want to provide a clear and flexible way to construct it.
 
@@ -576,7 +576,7 @@ In this example, the `ComputerBuilder` class allows you to create a `Computer` o
 4. The Builder pattern is often used in conjunction with other design patterns, such as the Fluent Interface pattern, to create more expressive and readable APIs.
 
 
-# *Can you give a detailed example of the "Object Pool" under Creational Patterns?*
+### *Can you give a detailed example of the "Object Pool" under Creational Patterns?*
 
 Certainly! The Object Pool pattern is a creational design pattern that manages a pool of reusable objects, known as the "pool," to improve the efficiency and performance of object allocation and deallocation. This pattern is particularly useful when the cost of creating and initializing objects is high and you want to avoid the overhead of creating and destroying objects frequently.
 
@@ -689,7 +689,7 @@ In this example, the `ConnectionPool` class initializes a pool of `DatabaseConne
 4. While object pooling can improve performance, it might not be suitable for all scenarios. In some cases, modern runtime environments and garbage collection mechanisms can handle object creation and destruction efficiently. Always measure and profile your application's performance to determine whether object pooling is beneficial.
 
 
-# *What are Structural Patterns? give examples of all its types.*
+### *What are Structural Patterns? give examples of all its types.*
 
 Structural patterns are design patterns that deal with the way classes and objects are composed to form larger structures. They are used to improve the flexibility and reusability of code by reducing duplication and dependencies.
 There are seven main types of structural patterns:
@@ -714,7 +714,7 @@ Here are some examples of how structural patterns can be used in real-world appl
 Structural patterns can be a valuable tool for improving the design and implementation of software. By using structural patterns, you can make your code more flexible, reusable, and maintainable.
 
 
-# *Can you give a detailed example of the "Adapter" under Structural Patterns?*
+### *Can you give a detailed example of the "Adapter" under Structural Patterns?*
 
 Certainly! The Adapter pattern is a structural design pattern that allows objects with incompatible interfaces to work together. It acts as a bridge between two interfaces, converting the interface of one class into another interface that clients expect. This pattern is useful when you need to integrate existing classes or systems with different interfaces without modifying their source code.
 
@@ -795,3 +795,140 @@ This way, the Adapter pattern allows the old payment processor (with the incompa
 3. The Adapter pattern can be used in scenarios like integrating third-party libraries, supporting legacy code, or creating wrapper classes to provide a more user-friendly interface to existing classes.
 
 4. While the Adapter pattern can be very useful, it's important to consider the complexity it introduces. It should be used when the benefits of integration outweigh the overhead of adding an additional layer of abstraction.
+
+### *Can you give a detailed example of the "Bridge" under Structural Patterns?*
+
+Certainly! The Bridge pattern is a structural design pattern that decouples an abstraction from its implementation, allowing both to evolve independently. It's used to create a bridge between abstract classes and their implementations, providing flexibility in adding new functionality without changing the existing code.
+
+Let's use an example of a remote control system for various types of devices using Spring Boot to illustrate the Bridge pattern.
+
+1. First, let's define the `Device` interface and its concrete implementations:
+
+```java
+// Device interface
+public interface Device {
+    void turnOn();
+    void turnOff();
+    void setVolume(int volume);
+}
+
+// Concrete implementation for TV
+public class TV implements Device {
+    @Override
+    public void turnOn() {
+        System.out.println("TV is turned on");
+    }
+
+    @Override
+    public void turnOff() {
+        System.out.println("TV is turned off");
+    }
+
+    @Override
+    public void setVolume(int volume) {
+        System.out.println("TV volume set to: " + volume);
+    }
+}
+
+// Concrete implementation for Radio
+public class Radio implements Device {
+    @Override
+    public void turnOn() {
+        System.out.println("Radio is turned on");
+    }
+
+    @Override
+    public void turnOff() {
+        System.out.println("Radio is turned off");
+    }
+
+    @Override
+    public void setVolume(int volume) {
+        System.out.println("Radio volume set to: " + volume);
+    }
+}
+```
+
+2. Next, let's define the `RemoteControl` abstraction and its refined abstractions:
+
+```java
+// RemoteControl interface
+public interface RemoteControl {
+    void turnOn();
+    void turnOff();
+    void setVolume(int volume);
+}
+
+// Refined abstraction for BasicRemoteControl
+public class BasicRemoteControl implements RemoteControl {
+    protected Device device;
+
+    public BasicRemoteControl(Device device) {
+        this.device = device;
+    }
+
+    @Override
+    public void turnOn() {
+        System.out.println("Remote: Turning on the device.");
+        device.turnOn();
+    }
+
+    @Override
+    public void turnOff() {
+        System.out.println("Remote: Turning off the device.");
+        device.turnOff();
+    }
+
+    @Override
+    public void setVolume(int volume) {
+        System.out.println("Remote: Setting volume to " + volume);
+        device.setVolume(volume);
+    }
+}
+
+// Refined abstraction for AdvancedRemoteControl
+public class AdvancedRemoteControl extends BasicRemoteControl {
+    public AdvancedRemoteControl(Device device) {
+        super(device);
+    }
+
+    public void mute() {
+        System.out.println("Remote: Muting the device.");
+        device.setVolume(0);
+    }
+}
+```
+
+3. Now, in our Spring Boot application, we can use the Bridge pattern to control different devices:
+
+```java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class RemoteControlApp {
+
+    public static void main(String[] args) {
+        SpringApplication.run(RemoteControlApp.class, args);
+
+        Device tv = new TV();
+        RemoteControl basicRemote = new BasicRemoteControl(tv);
+        RemoteControl advancedRemote = new AdvancedRemoteControl(tv);
+
+        basicRemote.turnOn();
+        basicRemote.setVolume(15);
+        basicRemote.turnOff();
+
+        System.out.println("-----");
+
+        advancedRemote.turnOn();
+        advancedRemote.setVolume(20);
+        ((AdvancedRemoteControl) advancedRemote).mute();
+        advancedRemote.turnOff();
+    }
+}
+```
+
+In this example, the `RemoteControl` interface acts as an abstraction, and the `BasicRemoteControl` and `AdvancedRemoteControl` classes serve as refined abstractions. The `Device` interface and its implementations represent the implementation side of the bridge.
+
+The Bridge pattern allows you to decouple the abstraction (remote control) from the implementation (device), which provides flexibility in extending and maintaining the codebase. New devices can be added without modifying existing remote control code, and vice versa.
