@@ -718,74 +718,73 @@ Structural patterns can be a valuable tool for improving the design and implemen
 
 Certainly! The Adapter pattern is a structural design pattern that allows objects with incompatible interfaces to work together. It acts as a bridge between two interfaces, converting the interface of one class into another interface that clients expect. This pattern is useful when you need to integrate existing classes or systems with different interfaces without modifying their source code.
 
-Let's use an example of an audio player that needs to play different types of audio formats using Spring Boot to illustrate the Adapter pattern.
-
-1. First, let's define the existing audio player classes:
+Here's the code example in Java:
 
 ```java
-public interface MediaPlayer {
-    void play(String audioType, String fileName);
+// Old interface
+interface OldPaymentProcessor {
+    void processPayment(int amount);
 }
 
-public class Mp3Player implements MediaPlayer {
+// New interface
+interface NewPaymentProcessor {
+    void pay(double amount);
+}
+
+// Old payment processor implementation
+class OldPaymentProcessorImpl implements OldPaymentProcessor {
     @Override
-    public void play(String audioType, String fileName) {
-        System.out.println("Playing mp3 file: " + fileName);
+    public void processPayment(int amount) {
+        System.out.println("Old payment processor processing payment of " + amount);
     }
 }
 
-public class Mp4Player {
-    public void playMp4(String fileName) {
-        System.out.println("Playing mp4 file: " + fileName);
+class NewPaymentProcessorImpl implements NewPaymentProcessor {
+    @Override
+    public void pay(double amount) {
+        System.out.println("New payment processor processing payment of " + amount);
     }
 }
-```
 
-2. Next, we'll create the `AdvancedMediaPlayer` interface and an adapter to make `Mp4Player` compatible with the `MediaPlayer` interface:
+// Adapter class that adapts the old payment processor to the new interface
+class OldToNewPaymentAdapter implements NewPaymentProcessor {
+    private OldPaymentProcessor oldProcessor;
 
-```java
-public interface AdvancedMediaPlayer {
-    void playMp4(String fileName);
-}
-
-public class Mp4PlayerAdapter implements MediaPlayer {
-    private AdvancedMediaPlayer mp4Player;
-
-    public Mp4PlayerAdapter(AdvancedMediaPlayer mp4Player) {
-        this.mp4Player = mp4Player;
+    public OldToNewPaymentAdapter(OldPaymentProcessor oldProcessor) {
+        this.oldProcessor = oldProcessor;
     }
 
     @Override
-    public void play(String audioType, String fileName) {
-        if ("mp4".equalsIgnoreCase(audioType)) {
-            mp4Player.playMp4(fileName);
-        }
+    public void pay(double amount) {
+        // Convert the amount from double to int and call the old payment processor
+        oldProcessor.processPayment((int) amount);
     }
 }
-```
 
-3. Now, in our Spring Boot application, we can use the adapter to play different audio formats:
-
-```java
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-@SpringBootApplication
-public class AudioPlayerApp {
-
+public class AdapterExample {
     public static void main(String[] args) {
-        SpringApplication.run(AudioPlayerApp.class, args);
+        // Create instances of the old payment processor and the adapter
+        OldPaymentProcessor oldProcessor = new OldPaymentProcessorImpl();
+        NewPaymentProcessor newProcessorUsingOldToNewAdapter = new OldToNewPaymentAdapter(oldProcessor);
+        NewPaymentProcessor newPaymentProcessor = new NewPaymentProcessorImpl();
 
-        MediaPlayer mp3Player = new Mp3Player();
-        MediaPlayer mp4Adapter = new Mp4PlayerAdapter(new Mp4Player());
-
-        mp3Player.play("mp3", "song.mp3");
-        mp4Adapter.play("mp4", "movie.mp4");
+        // Use the new payment processor interface
+        newProcessorUsingOldToNewAdapter.pay(100.50); // This will adapt the call to the old payment processor but it will convert double to int
+        // o/p: "Old payment processor processing payment of 100"
+        newPaymentProcessor.pay(245.75);
+        // o/p: "New payment processor processing payment of 245.75" 
     }
 }
 ```
 
-In this example, the `Mp4PlayerAdapter` acts as an adapter that converts the `Mp4Player`'s interface into the `MediaPlayer` interface. This allows the client code to use the `Mp4Player` in the context of the audio player, even though they have incompatible interfaces.
+In this example:
+
+1. We have the `OldPaymentProcessor` interface representing the old payment processing system and the `NewPaymentProcessor` interface representing the new payment processing system.
+2. The `OldPaymentProcessorImpl` class implements the old payment processing interface.
+3. The `OldToNewPaymentAdapter` class implements the new payment processing interface. It contains an instance of the old payment processor and adapts the `pay` method to internally use the `processPayment` method of the old payment processor.
+4. In the `main` method of the `AdapterExample` class, we create an instance of the old payment processor and wrap it in an adapter instance. Then, we use the new payment processor interface to make a payment. The adapter ensures that the old payment processor's method is invoked properly.
+
+This way, the Adapter pattern allows the old payment processor (with the incompatible interface) to work seamlessly with the new payment processor interface through the adapter class.
 
 **Important Considerations:**
 
