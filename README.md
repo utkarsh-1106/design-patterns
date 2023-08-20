@@ -1,6 +1,4 @@
-# design-patterns
-
-What are Design Patterns?
+*What are Design Patterns?*
 
 Design patterns are reusable solutions to common problems that arise during software design and development. They are not complete solutions themselves, but rather, they provide general templates and guidelines for solving recurring design issues. Design patterns help developers create software that is more maintainable, modular, and flexible by promoting best practices and proven techniques.
 
@@ -19,7 +17,30 @@ Each design pattern has a specific intent, structure, and usage scenario. While 
 Design patterns are an integral part of software engineering and are widely used in various programming languages and paradigms, including object-oriented programming (OOP) and functional programming. They serve as a common language for developers to communicate and share best practices when designing and implementing software systems.
 
 
-Can you give a detailed example of the "Factory Method" under Creational Patterns?
+*What are Creational Patterns? give examples of all its types.*
+
+Creational patterns are design patterns that deal with the creation of objects. They are used to abstract the process of object creation and to improve the flexibility and reusability of code.
+
+There are six main types of creational patterns:
+
+Factory Method: This pattern defines an interface for creating objects, but leaves the actual instantiation to subclasses. This allows subclasses to vary the type of objects that are created.
+Abstract Factory: This pattern provides a way to create families of related objects without specifying their concrete classes. This allows the client code to be independent of the concrete classes of the objects that it uses.
+Singleton: This pattern ensures that there is only one instance of a particular class in a program. This is useful for objects that need to be shared across the entire system.
+Prototype: This pattern creates a new object by cloning an existing object. This is useful for creating objects that are expensive to create or that need to be created frequently.
+Builder: This pattern separates the construction of a complex object from its representation. This makes it easier to create different representations of the same object.
+Object Pool: This pattern reuses objects that have been previously created. This can improve performance by reducing the number of objects that need to be created.
+
+Here are some examples of how creational patterns can be used in real-world applications:
+
+The Factory Method pattern can be used to create different types of database connections. The abstract factory pattern can be used to create different types of user interfaces.
+The Singleton pattern can be used to create a single logger object that can be used by all parts of the application.
+The Prototype pattern can be used to create different types of documents, such as Word documents, PDF documents, and HTML documents.
+The Builder pattern can be used to create different types of cars, such as sedans, SUVs, and trucks.
+The Object Pool pattern can be used to reuse network connections.
+Creational patterns can be a valuable tool for improving the design and implementation of software. By using creational patterns, you can make your code more flexible, reusable, and maintainable.
+
+
+*Can you give a detailed example of the "Factory Method" under Creational Patterns?*
 
 Certainly! The Factory Method is a creational design pattern that provides an interface for creating objects in a super class, but allows subclasses to alter the type of objects that will be created. This pattern promotes loose coupling between the client code and the concrete classes being instantiated. In Spring Boot, this pattern is often used in scenarios where you want to create objects based on certain conditions or configurations.
 
@@ -96,6 +117,7 @@ In this example, the `PaymentProcessorFactory` encapsulates the creation logic f
 
 Remember that this is just a simplified example to illustrate the Factory Method pattern using Spring Boot. In real-world scenarios, you might have more complex object creation logic and additional layers of abstraction in your application.
 
+```
 com
 └── yourcompany
     └── paymentapp
@@ -108,10 +130,10 @@ com
         ├── factory
         │   └── PaymentProcessorFactory.java
         └── PaymentApp.java (Spring Boot main application class)
+```
 
 
-
-Can you give a detailed example of the "Abstract Factory" under Creational Patterns and give the differences between Abstract Factory Method and Factory Method?
+*Can you give a detailed example of the "Abstract Factory" under Creational Patterns and give the differences between Abstract Factory Method and Factory Method?*
 
 Certainly! The Abstract Factory is another creational design pattern that provides an interface for creating families of related or dependent objects without specifying their concrete classes. It's used when a system must be independent of how its objects are created, composed, and represented. This pattern is particularly useful when you need to create multiple related objects that belong to the same family.
 
@@ -243,4 +265,70 @@ public class AuthApp {
 
 Both Factory Method and Abstract Factory patterns help to achieve loose coupling and flexibility in object creation, but they are applied to different scenarios based on the level of abstraction and complexity of the objects being created.
 
+
+*Can you give a detailed example of the "Singleton" under Creational Patterns?*
+
+Certainly! The Singleton pattern is a creational design pattern that ensures a class has only one instance and provides a global point of access to that instance. It's used to control the instantiation of a class to ensure there's only one instance throughout the application's lifetime. This is especially useful when you want to manage a shared resource or configuration.
+
+Let's use an example of a logging service using Spring Boot to illustrate the Singleton pattern.
+
+1. First, let's define the Singleton class for the logging service:
+
+```java
+public class Logger {
+    private static Logger instance;
+
+    private Logger() {
+        // Private constructor to prevent instantiation from outside
+    }
+
+    public static synchronized Logger getInstance() {
+        if (instance == null) {
+            instance = new Logger();
+        }
+        return instance;
+    }
+
+    public void log(String message) {
+        System.out.println("Logging: " + message);
+        // Actual logging logic here
+    }
+}
+```
+
+In this example, the `Logger` class has a private constructor to prevent direct instantiation from outside the class. The `getInstance()` method is used to provide the single instance of the class.
+
+2. Now, in our Spring Boot application, we can use the Singleton `Logger` class:
+
+```java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class LoggingApp {
+
+    public static void main(String[] args) {
+        SpringApplication.run(LoggingApp.class, args);
+
+        Logger logger1 = Logger.getInstance();
+        Logger logger2 = Logger.getInstance();
+
+        System.out.println("Are logger1 and logger2 the same instance? " + (logger1 == logger2));
+
+        logger1.log("Hello from logger1");
+        logger2.log("Hello from logger2");
+    }
+}
+```
+
+In this example, both `logger1` and `logger2` are references to the same instance of the `Logger` class, as confirmed by the comparison `(logger1 == logger2)`. This ensures that there's only one instance of the `Logger` class throughout the application's execution.
+
+**Important Considerations:**
+1. The above Singleton implementation is not thread-safe. If you want to ensure thread safety, you can use various techniques such as double-checked locking, lazy initialization with volatile, or using the initialization-on-demand holder idiom.
+
+2. In modern Java versions (Java 5 and later), you can also use the `java.util.concurrent.atomic.AtomicReference` or `Enum` to implement the Singleton pattern in a thread-safe manner.
+
+3. Be cautious when using Singletons, as they can introduce global state and make testing more challenging. It's important to consider whether a Singleton is the most appropriate solution for your design.
+
+4. In Spring Boot applications, Spring's managed beans and dependency injection can also help manage single instances effectively. Singleton pattern is often used when you're dealing with classes that aren't managed by Spring's container.
 
